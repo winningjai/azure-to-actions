@@ -15,7 +15,7 @@ jobs:
     - run: Write-Host "This step runs in PowerShell Core"
       shell: pwsh
     - run: Write-Host "This step runs in PowerShell"
-      shell: powershell
+      shell: pwsh
   runcmd-run_command:
     needs:
     - print-scripts
