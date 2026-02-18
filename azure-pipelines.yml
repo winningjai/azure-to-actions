@@ -24,7 +24,7 @@ stages:
         - script: echo "This step runs in CMD on Windows by default"
 
   - stage: conditional
-    displayName: ocnditional statement
+    displayName: conditional statement
     jobs:
     - job: conditional
       pool:
