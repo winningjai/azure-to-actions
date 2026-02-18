@@ -1,0 +1,68 @@
+jobs:
+###
+  - job: scripts
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: echo "This step runs in the default shell"
+      - bash: echo "This step runs in bash"
+      - pwsh: Write-Host "This step runs in PowerShell Core"
+      - task: PowerShell@2
+        inputs:
+          targetType: inline
+          script: Write-Host "This step runs in PowerShell"
+##
+  - job: run_command
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+      - script: echo "This step runs in CMD on Windows by default"
+# ##
+  - job: conditional
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: echo "This step runs with str equals 'ABC' and num equals 123"
+        condition: and(eq(variables.str, 'ABC'), eq(variables.num, 123))
+##
+  - job: initial
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: echo "This job will be run first."
+  - job: fanout1
+    pool:
+      vmImage: 'ubuntu-latest'
+    dependsOn: initial
+    steps:
+      - script: echo "This job will run after the initial job, in parallel with fanout2."
+  - job: fanout2
+    pool:
+      vmImage: 'ubuntu-latest'
+    dependsOn: initial
+    steps:
+      - script: echo "This job will run after the initial job, in parallel with fanout1."
+  - job: fanin
+    pool:
+      vmImage: 'ubuntu-latest'
+    dependsOn: [fanout1, fanout2]
+    steps:
+      - script: echo "This job will run after fanout1 and fanout2 have finished."
+##
+  - job: run_python
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.10.19'
+          architecture: 'x64'
+      - script: python script.py
+  - job: environmental_variables
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: echo "printing env variable name = $(NAME)"
+      - script: echo "printing secrets variable secret_name = $(SECRET_NAME)"
+      - script: echo "matched"
+        condition: eq(variables.secret_name,'medica_secret')
