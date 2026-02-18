@@ -1,0 +1,97 @@
+name: POCONE/azure-to-actions
+on:
+  push:
+    branches:
+    - "*"
+jobs:
+  print-scripts:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: echo "This step runs in the default shell"
+    - run: echo "This step runs in bash"
+      shell: bash
+    - run: Write-Host "This step runs in PowerShell Core"
+      shell: pwsh
+    - run: Write-Host "This step runs in PowerShell"
+      shell: powershell
+  runcmd-run_command:
+    needs:
+    - print-scripts
+    runs-on: windows-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: echo "This step runs in CMD on Windows by default"
+  conditional-conditional:
+    needs:
+    - runcmd-run_command
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - if: env.str == 'ABC' && env.num == 123
+      run: echo "This step runs with str equals 'ABC' and num equals 123"
+  dependent-initial:
+    needs:
+    - conditional-conditional
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: echo "This job will be run first."
+  dependent-fanout1:
+    needs:
+    - dependent-initial
+    - conditional-conditional
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: echo "This job will run after the initial job, in parallel with fanout2."
+  dependent-fanout2:
+    needs:
+    - dependent-initial
+    - conditional-conditional
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: echo "This job will run after the initial job, in parallel with fanout1."
+  dependent-fanin:
+    needs:
+    - dependent-fanout1
+    - dependent-fanout2
+    - conditional-conditional
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: echo "This job will run after fanout1 and fanout2 have finished."
+  tasks-run_python:
+    needs:
+    - dependent-initial
+    - dependent-fanout1
+    - dependent-fanout2
+    - dependent-fanin
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.10.19
+        architecture: x64
+    - run: python script.py
+  envvar-environmental_variables:
+    needs:
+    - tasks-run_python
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: echo "printing env variable name = ${{ env.NAME }}"
+    - run: echo "printing secrets variable secret_name = ${{ env.SECRET_NAME }}"
+    - if: env.secret_name == 'medica_secret'
+      run: echo "matched"
