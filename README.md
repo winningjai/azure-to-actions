@@ -74,23 +74,24 @@ Follow the steps below to migrate the azure devops pipelines to github actions
 
 The below pipelines are defined in azure-pipelines.yaml file 
 
-# Simple print: 
+### Simple print: 
 This pipeline will print statement steps in different shells (bash, powershell,powershell task) in linux runner. 
 
-# Command prompt: 
+### Command prompt: 
 This pipeline will print statement steps in windows runner. 
 
-# Conditional statement: 
+### Conditional statement: 
 This pipeline will run step based on defined conditions. 
 
-# Dependent jobs: 
+### Dependent jobs: 
 This pipeline will run jobs in a defined sequence by defining job dependencies.  
 
-# Azure tasks: 
+### Azure tasks: 
 This pipeline runs a python script using python tasks. 
 
-# Environmental variables: 
+### Environmental variables: 
 This pipeline will read environmental variables and secrets from repo variables. 
+
 
 
 
