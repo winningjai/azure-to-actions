@@ -42,7 +42,6 @@ Follow the steps below to migrate the Azure devops repository to github.
   <img width="1902" height="1010" alt="Screenshot from 2026-02-18 16-45-10" src="https://github.com/user-attachments/assets/15feaa9e-2af1-4028-8766-b0d3198edc1e" />
 - Wait till import completion
   <img width="1902" height="1010" alt="Screenshot from 2026-02-18 16-56-35" src="https://github.com/user-attachments/assets/601fd251-490e-45b7-9fb2-712f5b8717ee" />
-  <img width="1902" height="1010" alt="Screenshot from 2026-02-18 16-51-08" src="https://github.com/user-attachments/assets/2426167a-6d4f-4f25-9037-3164db3a9e96" />
 
 ## 3, Migrate pipelines 
 
@@ -91,6 +90,7 @@ This pipeline runs a python script using python tasks.
 
 ### Environmental variables: 
 This pipeline will read environmental variables and secrets from repo variables. 
+
 
 
 
